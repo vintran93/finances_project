@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # For development: prints emails to console
@@ -24,12 +24,15 @@ AUTHENTICATION_BACKENDS = [
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z8(3r#w1fkl7j#vz6m=^i0rs@10q=x0d5z2dh*9-rxsqvs@h!q'
+# For Django:
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-insecure-key-for-dev') # Set a fallback for local dev if needed, but not for prod
 
-# SECRET_KEY='your_super_secret_flask_key_CHANGE_ME'
-JWT_SECRET_KEY='your_jwt_secret_key_CHANGE_ME_TOO'
-DATABASE_URL='sqlite:///site.db' # Or your PostgreSQL/MySQL connection string
+# For JWT:
+JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+
+# For Database (example):
+DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///site.db')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
