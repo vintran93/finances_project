@@ -205,7 +205,7 @@ function Portfolios({ apiBaseUrl }) {
 
                 <Link to="/currencies" className="all-currencies-link">
                                 View All Currencies
-                        </Link>
+                </Link>
             <hr />
             
             <button onClick={handleBackToPortal}>Back to Portal</button>

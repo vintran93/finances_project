@@ -25,7 +25,7 @@ AUTHENTICATION_BACKENDS = [
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # For Django:
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-insecure-key-for-dev') # Set a fallback for local dev if needed, but not for prod
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'a_temporary_insecure_fallback_for_dev_ONLY') # Set a fallback for local dev if needed, but not for prod
 
 # For JWT:
 JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
