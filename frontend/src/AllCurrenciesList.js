@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // Added useCallback
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,11 +8,8 @@ function AllCurrenciesList({ apiBaseUrl }) {
     const [totalBalance, setTotalBalance] = useState('0.00');
     const [message, setMessage] = useState('');
 
-    useEffect(() => {
-        fetchAllCurrencies();
-    }, []);
-
-    const fetchAllCurrencies = async () => {
+    // Wrap fetchAllCurrencies in useCallback
+    const fetchAllCurrencies = useCallback(async () => {
         try {
             const accessToken = localStorage.getItem('accessToken');
             if (!accessToken) {
@@ -32,7 +29,8 @@ function AllCurrenciesList({ apiBaseUrl }) {
 
             // Calculate total balance from all fetched currencies
             const calculatedTotal = response.data.reduce((sum, currency) => {
-                const price = parseFloat(currency.price_per);
+                // Ensure current_price is used if available, otherwise fall back to current_entry_price, then price_per
+                const price = parseFloat(currency.current_price || currency.current_entry_price || currency.price_per); // MODIFIED
                 const amount = parseFloat(currency.amount_owned);
                 if (!isNaN(price) && !isNaN(amount)) {
                     return sum + (price * amount);
@@ -48,7 +46,11 @@ function AllCurrenciesList({ apiBaseUrl }) {
                 navigate('/login');
             }
         }
-    };
+    }, [apiBaseUrl, navigate]); // Dependencies for useCallback
+
+    useEffect(() => {
+        fetchAllCurrencies();
+    }, [fetchAllCurrencies]); // Added fetchAllCurrencies to dependency array
 
     const handleAddCurrencyClick = () => {
         navigate('/currencies/new'); // Navigate to the 'Create a Currency' page
@@ -63,6 +65,11 @@ function AllCurrenciesList({ apiBaseUrl }) {
         if (!dateString) return 'N/A';
         const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
+    };
+
+    const handleCurrencyClick = (portfolioId, currencyId) => {
+        // Navigate to the specific portfolio's currency page with the currency ID as a query parameter
+        navigate(`/currencies/${portfolioId}?editCurrencyId=${currencyId}`);
     };
 
     return (
@@ -80,17 +87,15 @@ function AllCurrenciesList({ apiBaseUrl }) {
                 ) : (
                     <ul className="currency-list">
                         {currencies.map((currency, index) => (
-                            <li key={currency.id} className="currency-item">
+                            <li 
+                                key={currency.id} 
+                                className="currency-item" 
+                                onClick={() => handleCurrencyClick(currency.portfolio, currency.id)} // Make the entire item clickable
+                                style={{ cursor: 'pointer' }} // Add cursor pointer for visual feedback
+                            >
                                 <span className="currency-info">
-                                    {index + 1}. {currency.name} - {currency.symbol} = ${ (parseFloat(currency.price_per) * parseFloat(currency.amount_owned)).toFixed(2) } | {formatDate(currency.date_added)}
+                                    {index + 1}. {currency.name} - {currency.symbol} = ${ (parseFloat(currency.current_price || currency.current_entry_price || currency.price_per) * parseFloat(currency.amount_owned)).toFixed(2) } | {formatDate(currency.date_added)} {/* MODIFIED */}
                                 </span>
-                                {/* You can add Edit/Delete buttons here for each currency if desired, similar to the specific portfolio view or the Portfolios page */}
-                                {/*
-                                <div className="currency-actions">
-                                    <button className="edit-button">Edit</button>
-                                    <button className="delete-button">Delete</button>
-                                </div>
-                                */}
                             </li>
                         ))}
                     </ul>

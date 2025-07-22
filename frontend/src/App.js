@@ -5,11 +5,14 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react
 // Import your components
 import AccountSettings from './AccountSettings';
 import ForgotPasswordRequest from './ForgotPasswordRequest';
-import PasswordResetConfirm from './PasswordResetConfirm'; // Corrected typo here, ensure this matches your filename
+import PasswordResetConfirm from './PasswordResetConfirm';
 import Portfolios from './Portfolios';
 import Currencies from './Currencies';
 import CreateCurrency from './CreateCurrency';
-import AllCurrenciesList from './AllCurrenciesList'; // <--- NEW IMPORT
+import AllCurrenciesList from './AllCurrenciesList';
+import PortfolioDashboard from './PortfolioDashboard';
+import CreateStock from './CreateStock';
+import CryptoStockSearch from './CryptoStockSearch'; // NEW IMPORT: Import CryptoStockSearch
 
 import './App.css';
 
@@ -170,9 +173,9 @@ function AppContent() {
           registerEmail={registerEmail}
           setRegisterEmail={setRegisterEmail}
           loginUsername={loginUsername}
-          setLoginUsername={setLoginUsername}
+          setLoginUsername={loginUsername}
           loginPassword={loginPassword}
-          setLoginPassword={setLoginPassword}
+          setLoginPassword={loginPassword}
           handleRegister={handleRegister}
           handleLogin={handleLogin}
           handleLogout={handleLogout}
@@ -192,35 +195,35 @@ function AppContent() {
           registerEmail={registerEmail}
           setRegisterEmail={setRegisterEmail}
           loginUsername={loginUsername}
-          setLoginUsername={setLoginUsername}
+          setLoginUsername={loginUsername}
           loginPassword={loginPassword}
-          setLoginPassword={setLoginPassword}
+          setLoginPassword={loginPassword}
           handleRegister={handleRegister}
           handleLogin={handleLogin}
           handleLogout={handleLogout}
         />}
       />
       <Route
-    path="/currencies" // This is the path for the All Currencies List page
-    element={isAuthenticated ? <AllCurrenciesList apiBaseUrl={AUTH_API_BASE_URL} /> : <CommonContent
-        isAuthenticated={isAuthenticated}
-        username={username}
-        message={message}
-        registerUsername={registerUsername}
-        setRegisterUsername={setRegisterUsername}
-        registerPassword={registerPassword}
-        setRegisterPassword={setRegisterPassword}
-        registerEmail={registerEmail}
-        setRegisterEmail={setRegisterEmail}
-        loginUsername={loginUsername}
-        setLoginUsername={setLoginUsername}
-        loginPassword={loginPassword}
-        setLoginPassword={setLoginPassword}
-        handleRegister={handleRegister}
-        handleLogin={handleLogin}
-        handleLogout={handleLogout}
-    />}
-/>
+        path="/currencies" // This is the path for the All Currencies List page
+        element={isAuthenticated ? <AllCurrenciesList apiBaseUrl={AUTH_API_BASE_URL} /> : <CommonContent
+            isAuthenticated={isAuthenticated}
+            username={username}
+            message={message}
+            registerUsername={registerUsername}
+            setRegisterUsername={setRegisterUsername}
+            registerPassword={registerPassword}
+            setRegisterPassword={setRegisterPassword}
+            registerEmail={registerEmail}
+            setRegisterEmail={setRegisterEmail}
+            loginUsername={loginUsername}
+            setLoginUsername={loginUsername}
+            loginPassword={loginPassword}
+            setLoginPassword={loginPassword}
+            handleRegister={handleRegister}
+            handleLogin={handleLogin}
+            handleLogout={handleLogout}
+        />}
+      />
       {/* Route for creating new currency */}
       <Route
         path="/currencies/new"
@@ -235,9 +238,77 @@ function AppContent() {
           registerEmail={registerEmail}
           setRegisterEmail={setRegisterEmail}
           loginUsername={loginUsername}
-          setLoginUsername={setLoginUsername}
+          setLoginUsername={loginUsername}
           loginPassword={loginPassword}
-          setLoginPassword={setLoginPassword}
+          setLoginPassword={loginPassword}
+          handleRegister={handleRegister}
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+        />}
+      />
+
+      <Route
+        path="/portfolio-dashboard" // Route for the dashboard
+        element={isAuthenticated ? <PortfolioDashboard apiBaseUrl={AUTH_API_BASE_URL} /> : <CommonContent
+          isAuthenticated={isAuthenticated}
+          username={username}
+          message={message}
+          registerUsername={registerUsername}
+          setRegisterUsername={setRegisterUsername}
+          registerPassword={registerPassword}
+          setRegisterPassword={setRegisterPassword}
+          registerEmail={registerEmail}
+          setRegisterEmail={setRegisterEmail}
+          loginUsername={loginUsername}
+          setLoginUsername={loginUsername}
+          loginPassword={loginPassword}
+          setLoginPassword={loginPassword}
+          handleRegister={handleRegister}
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+        />}
+      />
+
+      {/* Route for creating new stock */}
+      <Route
+        path="/stocks/new"
+        element={isAuthenticated ? <CreateStock apiBaseUrl={AUTH_API_BASE_URL} /> : <CommonContent
+          isAuthenticated={isAuthenticated}
+          username={username}
+          message={message}
+          registerUsername={registerUsername}
+          setRegisterUsername={setRegisterUsername}
+          registerPassword={registerPassword}
+          setRegisterPassword={setRegisterPassword}
+          registerEmail={registerEmail}
+          setRegisterEmail={setRegisterEmail}
+          loginUsername={loginUsername}
+          setLoginUsername={loginUsername}
+          loginPassword={loginPassword}
+          setLoginPassword={loginPassword}
+          handleRegister={handleRegister}
+          handleLogin={handleLogin}
+          handleLogout={handleLogout}
+        />}
+      />
+
+      {/* NEW ROUTE: Route for Crypto/Stock Search */}
+      <Route
+        path="/search"
+        element={isAuthenticated ? <CryptoStockSearch apiBaseUrl={AUTH_API_BASE_URL} /> : <CommonContent
+          isAuthenticated={isAuthenticated}
+          username={username}
+          message={message}
+          registerUsername={registerUsername}
+          setRegisterUsername={setRegisterUsername}
+          registerPassword={registerPassword}
+          setRegisterPassword={setRegisterPassword}
+          registerEmail={registerEmail}
+          setRegisterEmail={setRegisterEmail}
+          loginUsername={loginUsername}
+          setLoginUsername={loginUsername}
+          loginPassword={loginPassword}
+          setLoginPassword={loginPassword}
           handleRegister={handleRegister}
           handleLogin={handleLogin}
           handleLogout={handleLogout}
@@ -255,9 +326,9 @@ function AppContent() {
           registerEmail={registerEmail}
           setRegisterEmail={setRegisterEmail}
           loginUsername={loginUsername}
-          setLoginUsername={setLoginUsername}
+          setLoginUsername={loginUsername}
           loginPassword={loginPassword}
-          setLoginPassword={setLoginPassword}
+          setLoginPassword={loginPassword}
           handleRegister={handleRegister}
           handleLogin={handleLogin}
           handleLogout={handleLogout}
@@ -297,8 +368,10 @@ function CommonContent({
           <p>Welcome, {username}!</p>
           <nav>
             <Link to="/settings">Account Settings</Link>
-            {/* Added link to portfolios */}
             <Link to="/portfolios">Your Portfolios</Link>
+            <Link to="/portfolio-dashboard">View Portfolio Dashboard</Link>
+            <Link to="/currencies">All Currencies List</Link>
+            <Link to="/search">Search Crypto/Stock</Link> {/* NEW: Link to search page */}
             <button onClick={handleLogout}>Logout</button>
           </nav>
           <p>This is your main dashboard content. You can add more features here.</p>
@@ -349,7 +422,7 @@ function CommonContent({
             />
             <button type="submit">Login</button>
           </form>
-
+        
           <div>
               <Link to="/forgot-password">Forgot Password?</Link>
           </div>

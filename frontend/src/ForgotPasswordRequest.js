@@ -11,7 +11,7 @@ const ForgotPasswordRequest = ({ apiBaseUrl }) => {
     e.preventDefault();
     setMessage('');
     try {
-      const response = await axios.post(`${apiBaseUrl}/auth/users/reset_password/`, { email });
+      await axios.post(`${apiBaseUrl}/auth/users/reset_password/`, { email }); // Removed unused 'response' assignment
       setMessage('If an account with that email exists, a password reset email has been sent.');
       setEmail('');
     } catch (error) {

@@ -1,4 +1,3 @@
-// src/PasswordResetConfirm.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -52,7 +51,7 @@ const PasswordResetConfirm = ({ apiBaseUrl }) => {
     }
 
     try {
-      const response = await axios.post(`${apiBaseUrl}/auth/users/reset_password_confirm/`, {
+      await axios.post(`${apiBaseUrl}/auth/users/reset_password_confirm/`, { // Removed unused 'response' assignment
         uid: uid,
         token: token,
         new_password: newPassword,

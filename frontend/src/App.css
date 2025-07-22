@@ -1,552 +1,383 @@
-/* Basic body and html styling */
-html, body, #root {
-    height: 100%;
+/* General Body and App Container Styles */
+body {
     margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #2c3e50; /* Darker background for the entire page */
+    font-family: 'Inter', sans-serif; /* Using Inter font as requested */
+    background-color: #2c3e50; /* Dark blue-gray background */
+    color: #ecf0f1; /* Light gray text for contrast */
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: flex-start; /* Align to top, not center vertically */
     min-height: 100vh;
+    padding: 20px; /* Add some padding around the content */
     box-sizing: border-box;
 }
 
-/* Main App Container (the white card) */
 .App {
-    background-color: #34495e; /* Slightly lighter dark background for the card */
-    border-radius: 10px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Adjust shadow for darker background */
-    padding: 40px;
-    width: 90%;
-    max-width: 580px;
+    background-color: #34495e; /* Slightly lighter blue-gray for the app container */
+    padding: 30px;
+    border-radius: 12px; /* Rounded corners for the main app container */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 2500px; /* Increased max-width for the main app container */
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    margin: 40px auto;
     box-sizing: border-box;
-    color: #ecf0f1; /* Lighter text color for readability on dark background */
 }
 
 /* Headings */
-h1 {
-    font-size: 2.6em;
-    color: #ffffff; /* White headings */
-    margin-bottom: 25px;
-    font-weight: 700;
+h1, h2, h3 {
+    color: #ecf0f1; /* Light gray for headings */
+    margin-bottom: 20px;
 }
 
-h2 {
-    font-size: 1.8em;
-    color: #ecf0f1; /* Lighter sub-headings */
-    margin-top: 0;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #4a627a; /* Adjusted border color for contrast */
-    padding-bottom: 10px;
-    font-weight: 600;
-}
-
-/* Paragraphs */
-p {
-    color: #bdc3c7; /* Lighter grey for paragraphs */
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-/* Forms */
+/* Forms and Inputs */
 form {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    align-items: stretch;
+    gap: 15px;
     margin-top: 20px;
+    padding: 20px;
+    background-color: #4a617a; /* Darker shade for form background */
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Input Fields & Select */
+form label {
+    text-align: left;
+    color: #bdc3c7; /* Slightly darker light gray for labels */
+    font-weight: bold;
+    margin-bottom: -10px; /* Adjust spacing */
+}
+
 input[type="text"],
-input[type="password"],
 input[type="email"],
+input[type="password"],
 input[type="number"],
 select {
-    width: 100%;
-    padding: 14px 18px;
-    border: 1px solid #4a627a; /* Darker border for inputs */
-    border-radius: 8px;
-    font-size: 1.05em;
-    color: #ecf0f1; /* Lighter text in inputs */
-    background-color: #2c3e50; /* Darker background for inputs */
+    width: calc(100% - 20px); /* Adjust width for padding */
+    padding: 12px;
+    margin: 5px 0;
+    border: 1px solid #5d7a96; /* Border color matching the theme */
+    border-radius: 8px; /* Rounded corners for inputs */
+    background-color: #2c3e50; /* Dark input background */
+    color: #ecf0f1; /* Light text color */
     box-sizing: border-box;
-    transition: all 0.2s ease-in-out;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input[type="text"]:focus,
-input[type="password"]:focus,
 input[type="email"]:focus,
+input[type="password"]:focus,
 input[type="number"]:focus,
 select:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.4);
+    border-color: #3498db; /* Blue border on focus */
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.6);
     outline: none;
-}
-
-input::placeholder {
-    color: #95a5a6;
-}
-
-label {
-    display: block;
-    text-align: left;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #ecf0f1;
-    font-size: 0.95em;
-}
-
-select {
-    margin-bottom: 15px;
-    cursor: pointer;
 }
 
 /* Buttons */
 button {
-    background-color: #007bff;
+    background-color: #3498db; /* Blue button */
     color: white;
-    padding: 14px 28px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 8px;
-    font-size: 1.15em;
+    border-radius: 8px; /* Rounded corners for buttons */
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-    align-self: center;
-    min-width: 180px;
-    font-weight: 600;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 10px; /* Space above buttons */
 }
 
 button:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    background-color: #2980b9; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
 
 button:active {
-    background-color: #004085;
     transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Horizontal Rule (for separation) */
-hr {
-    border: none;
-    border-top: 1px solid #4a627a;
-    margin: 35px 0;
+.action-button {
+    background-color: #2ecc71; /* Green for add/create actions */
 }
 
-/* Links (general styling) */
-a {
-    color: #3498db;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
+.action-button:hover {
+    background-color: #27ae60;
 }
 
-a:hover {
-    color: #2980b9;
-    text-decoration: underline;
-}
-
-/* Messages */
-.success-message {
-    color: #2ecc71;
-    background-color: #1a472a;
-    border: 1px solid #27ae60;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    font-weight: bold;
-    animation: fadeIn 0.5s ease-out;
-}
-
-.error-message {
-    color: #e74c3c;
-    background-color: #4a1c1c;
-    border: 1px solid #c0392b;
-    padding: 12px;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    font-weight: bold;
-    animation: fadeIn 0.5s ease-out;
-}
-
-/* Keyframe for fade-in animation */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* User Portal Specific Styling (Homepage when logged in) */
-.App nav {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-}
-
-.App nav a,
-.App nav button {
-    background: none;
-    border: 1px solid #95a5a6;
-    color: #ecf0f1;
-    padding: 10px 18px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1em;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.App nav a:hover,
-.App nav button:hover {
-    background-color: #95a5a6;
-    color: #2c3e50;
-    text-decoration: none;
-}
-
-/* Specific styling for Logout button within portal nav */
-.App nav button.logout-button {
-    background-color: #e74c3c;
-    color: white;
-    border-color: #e74c3c;
-}
-
-.App nav button.logout-button:hover {
-    background-color: #c0392b;
-    border-color: #c0392b;
-}
-
-/* Section styling: 'Create New Portfolio', 'Your Existing Portfolios', 'Change Password' */
-.create-portfolio-section,
-.existing-portfolios-section,
-.change-password-section {
-    padding: 25px;
-    background-color: #4a627a;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    margin-bottom: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.create-portfolio-section h2,
-.existing-portfolios-section h2,
-.change-password-section h2 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #ecf0f1;
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.create-portfolio-section form {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.create-portfolio-section input[type="text"] {
-    flex-grow: 1;
-    max-width: 280px;
-    margin-bottom: 0;
-}
-
-.create-portfolio-section button[type="submit"] {
-    padding: 10px 18px;
-    font-size: 1em;
-    min-width: auto;
-    align-self: unset;
-}
-
-.portfolio-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 0;
-}
-
-.portfolio-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    margin-bottom: 12px;
-    background-color: #5c7493;
-    border: 1px solid #4a627a;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.portfolio-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-}
-
-.portfolio-name-link {
-    font-size: 1.15em;
-    color: #3498db;
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: bold;
-    flex-grow: 1;
-    text-align: left;
-    margin-right: 15px;
-}
-
-.portfolio-total-balance {
-    font-weight: bold;
-    color: #2ecc71;
-    font-size: 1.15em;
-    margin-left: auto;
-    white-space: nowrap;
+.edit-button {
+    background-color: #f39c12; /* Orange for edit */
     margin-right: 10px;
 }
 
-.portfolio-loading {
-    color: #95a5a6;
-    font-style: italic;
+.edit-button:hover {
+    background-color: #e67e22;
 }
 
-.delete-portfolio-button {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 50%; /* This is key for circular shape */
-    width: 28px;   /* Equal width and height for perfect circle */
-    height: 28px;  /* Equal to width for perfect circle */
-    font-size: 1em;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    justify-content: center; /* Center 'X' horizontally */
-    align-items: center;     /* Center 'X' vertically */
-    padding: 0; /* REMOVE ALL PADDING to prevent flattening */
-    line-height: 1; /* Ensure line height doesn't add extra space */
-    transition: background-color 0.2s ease;
-    flex-shrink: 0; /* Prevent button from shrinking */
-    min-width: 28px; /* Prevent shrinking below intended size */
-    max-width: 28px; /* Prevent expanding beyond intended size */
-    min-height: 28px; /* Prevent shrinking below intended size */
-    max-height: 28px; /* Prevent expanding beyond intended size */
-    box-sizing: border-box; /* Ensure border-box sizing */
-    text-align: center; /* Additional centering for the X */
-    vertical-align: middle; /* Additional vertical alignment */
+.delete-button {
+    background-color: #e74c3c; /* Red for delete */
 }
 
-.delete-portfolio-button:hover {
+.delete-button:hover {
     background-color: #c0392b;
 }
 
-/* Grand Total Display (for Portfolios page) */
-.grand-total-display {
-    text-align: center;
-    margin-top: 30px;
-    padding-top: 15px;
-    border-top: 1px solid #4a627a;
-}
-
-.grand-total-display h3 {
-    font-size: 1.6em;
-    color: #3498db;
-    margin: 0;
-}
-
-.all-currencies-link {
-    display: inline-block;
-    margin-top: 15px;
-    font-size: 1.25em; /* Increased font size */
-    font-weight: 600;
-    color: #3498db;
-    text-decoration: none;
-    transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.all-currencies-link:hover {
-    color: #2980b9;
-    text-decoration: underline;
-}
-
-
-/* All Currencies Page specific styling */
-.total-balance-display {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #ecf0f1;
-    margin: 25px 0;
-    text-align: center;
-}
-
-
-/* All Currencies Page specific styling */
-.total-balance-display {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #ecf0f1;
-    margin: 25px 0;
-    text-align: center;
-}
-
-.currency-list-section {
+.back-button {
+    background-color: #7f8c8d; /* Gray for back buttons */
     margin-top: 20px;
 }
 
+.back-button:hover {
+    background-color: #95a5a6;
+}
+
+/* Messages (Success/Error) */
+.message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.success-message {
+    background-color: #27ae60; /* Green for success */
+    color: white;
+}
+
+.error-message {
+    background-color: #e74c3c; /* Red for error */
+    color: white;
+}
+
+/* Navigation Links */
+nav {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap; /* Allow links to wrap on smaller screens */
+}
+
+nav a {
+    color: #3498db; /* Blue for links */
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: 1px solid #3498db; /* Border for links */
+}
+
+nav a:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+/* Portfolio and Currency List Specific Styles */
+.portfolio-list-section,
+.currency-list-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #4a617a;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.portfolio-list,
 .currency-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-/* IMPORTANT FIX: Currency Item Layout */
+.portfolio-item,
 .currency-item {
-    background-color: #5c7493;
-    border: 1px solid #4a627a;
-    border-radius: 8px; /* Slightly more rounded */
-    padding: 15px 20px;
-    margin-bottom: 12px;
-    display: flex; /* Use flexbox for layout */
-    flex-wrap: wrap; /* Allow items to wrap if needed */
-    justify-content: space-between; /* Space out content and buttons */
-    align-items: center; /* Vertically align items */
-    font-size: 1em;
-    position: relative; /* For absolute positioning if needed, or context for button container */
-}
-
-.currency-info {
-    flex-grow: 1; /* Allow info to take up available space */
-    color: #ecf0f1;
-    text-align: left;
-    /* max-width: calc(100% - 150px); /* Adjust based on button width, ensures space */
-    margin-right: 10px; /* Space between info and buttons */
-}
-
-.currency-info h3,
-.currency-info p {
-    margin: 0; /* Remove default margins for tighter info display */
-    padding: 0;
-    line-height: 1.4;
-}
-
-.currency-item .currency-value {
-    font-weight: bold;
-    color: #2ecc71;
-    margin-left: auto; /* Push to the right if space allows */
-    white-space: nowrap;
-    /* No align-self here, let parent .currency-item control alignment */
-}
-
-/* Container for Edit/Delete buttons within currency item */
-/* This is crucial for keeping buttons within the section */
-.currency-item-actions {
-    display: flex;
-    gap: 8px; /* Smaller gap between Edit and Delete buttons */
-    /* Remove width: 100% and justify-content: center if you want them aligned right next to info */
-    /* If you want them always on the right regardless of content length, use margin-left: auto */
-    margin-left: auto; /* Pushes the buttons to the far right */
-    flex-shrink: 0; /* Prevents buttons from shrinking */
-    padding-left: 10px; /* Small padding if info gets too close */
-}
-
-.currency-item-actions button {
-    padding: 8px 15px; /* Smaller padding for these specific buttons */
-    font-size: 0.9em; /* Smaller font size */
-    min-width: 70px; /* Give them a minimum width */
-    height: 35px; /* Fixed height for consistency */
-    border-radius: 5px; /* Slightly less rounded than main buttons */
-    align-self: center; /* Center vertically within the flex container */
-    margin: 0; /* Remove any default margins that might push them out */
-}
-
-/* Ensure Edit/Delete buttons use appropriate colors */
-.currency-item-actions .edit-button {
-    background-color: #3498db; /* Blue for Edit */
-}
-.currency-item-actions .edit-button:hover {
-    background-color: #2980b9;
-}
-
-.currency-item-actions .delete-button-currency { /* Specific class for currency delete */
-    background-color: #e74c3c; /* Red for Delete */
-}
-.currency-item-actions .delete-button-currency:hover {
-    background-color: #c0392b;
-}
-
-
-/* Action buttons (Add A New Currency, Back to Portfolios, etc.) */
-.action-button, .back-button, .add-new-currency-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 14px 28px;
-    border: none;
+    background-color: #5d7a96; /* Slightly lighter background for list items */
+    margin-bottom: 10px;
+    padding: 15px;
     border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.15em;
-    margin-top: 20px;
-    text-decoration: none;
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-    font-weight: 600;
-}
-
-.action-button:hover, .back-button:hover, .add-new-currency-btn:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-.action-button:active, .back-button:active, .add-new-currency-btn:active {
-    background-color: #004085;
-    transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-}
-
-/* Specific color for "Add New Currency" if needed */
-.add-new-currency-btn {
-    background-color: #2ecc71;
-    border-color: #2ecc71;
-}
-
-.add-new-currency-btn:hover {
-    background-color: #27ae60;
-    border-color: #27ae60;
-}
-
-/* Currency suggestions list (if you have this feature) */
-.currency-suggestions {
-    background-color: #4a627a;
-    border: 1px solid #5c7493;
-    border-radius: 4px;
-    padding: 10px;
-    margin-top: -10px;
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    align-items: flex-start; /* Align text to the left */
     text-align: left;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
 }
 
-.currency-suggestions ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.portfolio-item:hover,
+.currency-item:hover {
+    transform: translateY(-3px);
 }
 
-.currency-suggestions li {
-    padding: 5px 0;
-    color: #bdc3c7;
-    font-size: 0.9em;
+/* Modified portfolio-info to use flexbox for alignment */
+.portfolio-info {
+    display: flex; /* Enable flexbox */
+    justify-content: space-between; /* Push items to ends */
+    align-items: center; /* Vertically center items */
+    flex-grow: 1;
+    /* Removed margin-bottom here as it's now handled by the flex container */
+    width: 100%; /* Ensure info takes full width */
+}
+
+.portfolio-total {
+    margin-left: auto; /* Push this element to the far right */
+    white-space: nowrap; /* Prevent wrapping of the total value */
+    text-align: right; /* Ensure text itself is right-aligned if it wraps */
+}
+
+.portfolio-actions,
+.currency-actions {
+    display: flex;
+    gap: 10px; /* Space between action buttons */
+    width: 100%; /* Ensure actions take full width */
+    justify-content: flex-end; /* Align buttons to the right */
+    margin-top: 10px; /* Add margin to separate from info */
+}
+
+/* Specific styling for total balance displays */
+.total-balance-display {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #2ecc71; /* Green for positive balance */
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #4a617a;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.profit {
+    color: #2ecc71; /* Green for profits */
+    font-weight: bold;
+}
+
+.loss {
+    color: #e74c3c; /* Red for losses */
+    font-weight: bold;
+}
+
+/* Horizontal Rule */
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #5d7a96;
+    margin: 30px 0;
+}
+
+/* Table styles for dashboard */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #5d7a96; /* Slightly lighter background for tables */
+    border-radius: 8px;
+    overflow: hidden; /* Ensures rounded corners apply to content */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+th, td {
+    padding: 12px 8px; /* Adjusted padding for better fit */
+    border-bottom: 1px solid #4a617a; /* Darker border for rows */
+    text-align: left;
+    color: #ecf0f1;
+    white-space: nowrap; /* Prevent text from wrapping in table cells */
+}
+
+th {
+    background-color: #4a617a; /* Darker header background */
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85em; /* Slightly smaller font for headers */
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #526b84; /* Alternate row color */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .App {
+        padding: 20px;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav a {
+        width: calc(100% - 30px); /* Full width minus padding */
+        box-sizing: border-box;
+    }
+
+    .portfolio-item,
+    .currency-item {
+        padding: 12px;
+    }
+
+    /* Adjust table for smaller screens */
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        margin-bottom: 15px;
+        border: 1px solid #4a617a;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #4a617a;
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+    }
+
+    td:before {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #bdc3c7;
+    }
+
+    /* Label the data */
+    td:nth-of-type(1):before { content: "Name:"; }
+    td:nth-of-type(2):before { content: "Symbol:"; }
+    td:nth-of-type(3):before { content: "Rank:"; }
+    td:nth-of-type(4):before { content: "1HR:"; }
+    td:nth-of-type(5):before { content: "24HR:"; }
+    td:nth-of-type(6):before { content: "7D:"; }
+    td:nth-of-type(7):before { content: "Current Price:"; }
+    td:nth-of-type(8):before { content: "Total Value:"; }
+    td:nth-of-type(9):before { content: "Total Paid:"; }
+    td:nth-of-type(10):before { content: "Profits/Losses:"; }
+    td:nth-of-type(11):before { content: "Price per (at entry):"; }
+    td:nth-of-type(12):before { content: "Amount owned:"; }
 }
