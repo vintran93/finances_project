@@ -172,10 +172,12 @@ class CurrencyViewSet(viewsets.ModelViewSet):
                 'percent_change_1h': None,
                 'percent_change_24h': None,
                 'percent_change_7d': None,
-                'price_per': None,
+                'price_per': None, # This is the purchase price
+                'current_entry_price': None, # This is the market price at entry
                 'amount_owned': None,
                 'total_paid': None,
                 'profits_losses': None,
+                'total_value': None # Corrected typo from 'total_value:'
             }
 
             if crypto_info:
@@ -192,6 +194,7 @@ class CurrencyViewSet(viewsets.ModelViewSet):
             user_currency_in_portfolio = Currency.objects.filter(symbol__iexact=symbol_param, portfolio__user=request.user).first()
             if user_currency_in_portfolio:
                 response_data['price_per'] = float(user_currency_in_portfolio.price_per)
+                response_data['current_entry_price'] = float(user_currency_in_portfolio.current_entry_price) if user_currency_in_portfolio.current_entry_price is not None else None
                 response_data['amount_owned'] = float(user_currency_in_portfolio.amount_owned)
                 # Calculate total_paid and profits_losses using stored data if current_price is not available
                 purchase_price_per = float(user_currency_in_portfolio.price_per)
@@ -200,9 +203,11 @@ class CurrencyViewSet(viewsets.ModelViewSet):
                 
                 current_price = response_data['current_price']
                 if current_price is not None:
+                    response_data['total_value'] = current_price * amount_owned
                     response_data['profits_losses'] = (current_price - purchase_price_per) * amount_owned
                 else:
                     # If current price is not available, profits/losses cannot be accurately calculated from market
+                    response_data['total_value'] = None
                     response_data['profits_losses'] = None 
 
             return Response([response_data]) # Always return a list for consistency with frontend expectation
@@ -315,6 +320,7 @@ class StockViewSet(viewsets.ModelViewSet):
                 'shares_owned': None,
                 'amount_paid': None,
                 'profits_losses': None,
+                'total_value': None,  
             }
 
             if stock_price_info is not None: # Check for None explicitly as price can be 0
@@ -337,9 +343,11 @@ class StockViewSet(viewsets.ModelViewSet):
 
                 current_price = response_data['current_price']
                 if current_price is not None:
+                    response_data['total_value'] = current_price * shares_owned
                     response_data['profits_losses'] = (current_price - cost_per_share) * shares_owned
                 else:
                     # If current price is not available, profits/losses cannot be accurately calculated from market
+                    response_data['total_value'] = None
                     response_data['profits_losses'] = None
 
             return Response([response_data]) # Always return a list for consistency with frontend expectation
@@ -431,3 +439,29 @@ class TopStocksView(APIView):
             })
         
         return Response(top_stocks_data)
+
+from rest_framework import serializers
+from .models import Portfolio, Currency, Stock
+
+class PortfolioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Portfolio
+        fields = ['id', 'name', 'created_at', 'updated_at', 'user']
+        read_only_fields = ['user', 'created_at', 'updated_at'] # User will be set by the view
+
+class CurrencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Currency
+        fields = ['id', 'name', 'symbol', 'price_per', 'current_entry_price', 'amount_owned', 'portfolio', 'created_at', 'updated_at'] # Add new fields here
+        read_only_fields = ['created_at', 'updated_at']
+
+class StockSerializer(serializers.ModelSerializer):
+    portfolio = serializers.SerializerMethodField()
+    class Meta:
+        model = Stock
+        fields = ['id', 'name', 'symbol', 'cost_per_share', 'shares_owned', 'portfolio', 'created_at', 'updated_at']
+        read_only_fields = ['created_at', 'updated_at']
+    
+    def get_portfolio(self, obj):
+        # This method will return the ID of the related portfolio
+        return obj.portfolio.id

@@ -1,312 +1,580 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+// import React, { useState, useEffect } from 'react';
+// import axios from 'axios';
+// import { useNavigate } from 'react-router-dom';
 
-// Define a list of common stock symbols for client-side override
-const COMMON_STOCK_SYMBOLS = [
-    'TSLA', 'AAPL', 'MSFT', 'GOOG', 'AMZN', 'NVDA', 'JPM', 'V', 'MA', 'HD', 'PG', 'KO', 'PEP',
-    'DIS', 'NFLX', 'SBUX', 'NKE', 'INTC', 'CSCO', 'ADBE', 'CRM', 'PYPL', 'CMG', 'MCD', 'COST',
-    'WMT', 'XOM', 'CVX', 'UNH', 'JNJ', 'PFE', 'MRK', 'ABBV', 'LLY', 'AMGN', 'BA', 'GE', 'F',
-    'GM', 'BAC', 'WFC', 'C', 'GS', 'MS', 'SPG', 'PLD', 'O', 'EQIX', 'AMT', 'CCI', 'PSA'
-];
+// // Define a list of common stock symbols for client-side override
+// const COMMON_STOCK_SYMBOLS = [
+//     'TSLA', 'AAPL', 'MSFT', 'GOOG', 'AMZN', 'NVDA', 'JPM', 'V', 'MA', 'HD', 'PG', 'KO', 'PEP',
+//     'DIS', 'NFLX', 'SBUX', 'NKE', 'INTC', 'CSCO', 'ADBE', 'CRM', 'PYPL', 'CMG', 'MCD', 'COST',
+//     'WMT', 'XOM', 'CVX', 'UNH', 'JNJ', 'PFE', 'MRK', 'ABBV', 'LLY', 'AMGN', 'BA', 'GE', 'F',
+//     'GM', 'BAC', 'WFC', 'C', 'GS', 'MS', 'SPG', 'PLD', 'O', 'EQIX', 'AMT', 'CCI', 'PSA'
+// ];
 
-function CryptoStockSearch({ apiBaseUrl }) {
-    const [symbol, setSymbol] = useState('');
-    const [searchResult, setSearchResult] = useState(null);
-    const [message, setMessage] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [topCryptos, setTopCryptos] = useState([]); // State for top cryptocurrencies
-    const [topStocks, setTopStocks] = useState([]);     // State for top stocks
-    const navigate = useNavigate();
+// // Define a list of known cryptocurrency symbols
+// const KNOWN_CRYPTOS = ['BTC', 'ETH', 'LTC', 'XRP', 'ADA', 'DOT', 'LINK', 'BNB', 'SOL', 'DOGE', 'SHIB', 'AVAX'];
 
-    // Fetch top cryptos and stocks on component mount
-    useEffect(() => {
-        const fetchTopLists = async () => {
-            const accessToken = localStorage.getItem('accessToken');
-            if (!accessToken) {
-                // Don't set message or navigate here, as it's handled by handleSearch
-                return;
-            }
+// function CryptoStockSearch({ apiBaseUrl }) {
+//     const [symbol, setSymbol] = useState('');
+//     const [searchResult, setSearchResult] = useState(null);
+//     const [message, setMessage] = useState('');
+//     const [loading, setLoading] = useState(false);
+//     const [topCryptos, setTopCryptos] = useState([]);
+//     const [topStocks, setTopStocks] = useState([]);
+//     const navigate = useNavigate();
 
-            try {
-                // Fetch top cryptocurrencies
-                const cryptoResponse = await axios.get(`${apiBaseUrl}/top-cryptocurrencies/`, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                setTopCryptos(cryptoResponse.data);
-                console.log("Fetched Top Cryptos:", cryptoResponse.data);
+//     // Fetch top cryptos and stocks on component mount
+//     useEffect(() => {
+//         const fetchTopLists = async () => {
+//             const accessToken = localStorage.getItem('accessToken');
+//             if (!accessToken) {
+//                 return;
+//             }
 
-                // Fetch top stocks
-                const stockResponse = await axios.get(`${apiBaseUrl}/top-stocks/`, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                setTopStocks(stockResponse.data);
-                console.log("Fetched Top Stocks:", stockResponse.data);
+//             try {
+//                 // Fetch top cryptocurrencies
+//                 const cryptoResponse = await axios.get(`${apiBaseUrl}/top-cryptocurrencies/`, {
+//                     headers: { 'Authorization': `Bearer ${accessToken}` }
+//                 });
+//                 setTopCryptos(cryptoResponse.data);
+//                 console.log("Fetched Top Cryptos:", cryptoResponse.data);
 
-            } catch (error) {
-                console.error("Error fetching top lists:", error.response?.data || error);
-                // Optionally set a message for the user if these lists fail to load
-            }
-        };
-        fetchTopLists();
-    }, [apiBaseUrl]);
+//                 // Fetch top stocks
+//                 const stockResponse = await axios.get(`${apiBaseUrl}/top-stocks/`, {
+//                     headers: { 'Authorization': `Bearer ${accessToken}` }
+//                 });
+//                 setTopStocks(stockResponse.data);
+//                 console.log("Fetched Top Stocks:", stockResponse.data);
+
+//             } catch (error) {
+//                 console.error("Error fetching top lists:", error.response?.data || error);
+//             }
+//         };
+//         fetchTopLists();
+//     }, [apiBaseUrl]);
+
+//     const handleSearch = async (e) => {
+//         e.preventDefault();
+//         setMessage('');
+//         setSearchResult(null);
+//         setLoading(true);
+
+//         if (!symbol.trim()) {
+//             setMessage('Please enter a symbol.');
+//             setLoading(false);
+//             return;
+//         }
+
+//         const accessToken = localStorage.getItem('accessToken');
+//         if (!accessToken) {
+//             setMessage('You need to be logged in to search for assets.');
+//             navigate('/login');
+//             setLoading(false);
+//             return;
+//         }
+
+//         const upperSymbol = symbol.toUpperCase();
+//         let tempSearchResult = null;
+//         let stockApiAttempted = false; // Track if stock API was attempted
+//         let currencyApiAttempted = false; // Track if currency API was attempted
+
+//         try {
+//             // Priority 1: If it's a known stock symbol, try stock API first
+//             if (COMMON_STOCK_SYMBOLS.includes(upperSymbol)) {
+//                 stockApiAttempted = true;
+//                 try {
+//                     const stockResponse = await axios.get(`${apiBaseUrl}/stocks/?symbol=${upperSymbol}`, {
+//                         headers: { 'Authorization': `Bearer ${accessToken}` }
+//                     });
+//                     if (stockResponse.data && stockResponse.data.length > 0) {
+//                         const stockData = stockResponse.data[0];
+//                         // Only consider it a success if it has a name or a non-null price/shares_owned
+//                         if (stockData.name || stockData.price !== null || stockData.shares_owned !== null) {
+//                             tempSearchResult = {
+//                                 name: stockData.name,
+//                                 symbol: stockData.symbol,
+//                                 price: stockData.current_price,
+//                                 type: 'Stock',
+//                                 cost_per_share: stockData.cost_per_share,
+//                                 shares_owned: stockData.shares_owned,
+//                                 percent_change_24h: stockData.percent_change_24h || null,
+//                                 current_entry_price: stockData.current_entry_price || stockData.cost_per_share,
+//                                 market_cap: stockData.market_cap,
+//                                 volume: stockData.volume,
+//                                 pe_ratio: stockData.pe_ratio,
+//                             };
+//                             // Perform calculations on the frontend if shares are owned
+//                             const parsedSharesOwned = parseFloat(tempSearchResult.shares_owned);
+//                             if (!isNaN(parsedSharesOwned) && parsedSharesOwned > 0) {
+//                                 const parsedCostPerShare = parseFloat(tempSearchResult.cost_per_share);
+//                                 const parsedCurrentEntryPrice = parseFloat(tempSearchResult.current_entry_price);
+//                                 const parsedCurrentPrice = parseFloat(tempSearchResult.price);
+
+//                                 if (!isNaN(parsedCostPerShare)) {
+//                                     tempSearchResult.amount_paid = parsedCostPerShare * parsedSharesOwned;
+//                                 } else {
+//                                     tempSearchResult.amount_paid = null;
+//                                 }
+//                                 if (!isNaN(parsedCurrentPrice)) {
+//                                     tempSearchResult.total_value = parsedCurrentPrice * parsedSharesOwned;
+//                                 } else {
+//                                     tempSearchResult.total_value = null;
+//                                 }
+//                                 // Manual calculation for Profits/Losses for stocks
+//                                 if (!isNaN(parsedCurrentEntryPrice) && !isNaN(parsedCostPerShare)) {
+//                                     tempSearchResult.profits_losses = (parsedCurrentEntryPrice * parsedSharesOwned) - (parsedCostPerShare * parsedSharesOwned);
+//                                 } else {
+//                                     tempSearchResult.profits_losses = null;
+//                                 }
+//                             }
+//                         }
+//                     }
+//                 } catch (stockError) {
+//                     console.log("Error fetching as stock (primary attempt):", stockError.response?.data || stockError);
+//                     // Don't set tempSearchResult here, let it fall through to crypto if stock API failed
+//                 }
+//             }
+
+//             // Priority 2: If it's a known crypto symbol, try currency API first
+//             // OR if stock API was not attempted for this symbol, OR if stock API failed to return meaningful data
+//             if (KNOWN_CRYPTOS.includes(upperSymbol) || (!stockApiAttempted && !tempSearchResult)) {
+//                 currencyApiAttempted = true;
+//                 try {
+//                     const currencyResponse = await axios.get(`${apiBaseUrl}/currencies/?symbol=${upperSymbol}`, {
+//                         headers: { 'Authorization': `Bearer ${accessToken}` }
+//                     });
+//                     if (currencyResponse.data && currencyResponse.data.length > 0) {
+//                         const currencyData = currencyResponse.data[0];
+//                         // Only consider it a success if it has a name or a non-null price/amount_owned
+//                         if (currencyData.name || currencyData.current_price !== null || currencyData.amount_owned !== null) {
+//                             // If a stock result was already found, and this is a known crypto, prioritize crypto
+//                             // If this is a stock symbol but found as currency, and stockApi failed, use this.
+//                             if (!tempSearchResult || KNOWN_CRYPTOS.includes(upperSymbol)) {
+//                                 tempSearchResult = {
+//                                     name: currencyData.name,
+//                                     symbol: currencyData.symbol,
+//                                     price: currencyData.current_price,
+//                                     type: 'Cryptocurrency', // Default to crypto
+//                                     rank: currencyData.rank,
+//                                     percent_change_1h: currencyData.percent_change_1h,
+//                                     percent_change_24h: currencyData.percent_change_24h,
+//                                     percent_change_7d: currencyData.percent_change_7d,
+//                                     price_per: currencyData.price_per,
+//                                     current_entry_price: currencyData.current_entry_price,
+//                                     amount_owned: currencyData.amount_owned,
+//                                     total_paid: currencyData.total_paid, // These will be recalculated below
+//                                     profits_losses: currencyData.profits_losses, // These will be recalculated below
+//                                     total_value: currencyData.total_value, // These will be recalculated below
+//                                     market_cap: currencyData.market_cap,
+//                                     volume_24h: currencyData.volume_24h,
+//                                 };
+
+//                                 // Special handling if a COMMON_STOCK_SYMBOLS is found in currencies
+//                                 // AND no meaningful stock result was found initially
+//                                 if (COMMON_STOCK_SYMBOLS.includes(upperSymbol) && (!stockApiAttempted || !tempSearchResult || (tempSearchResult.type === 'Stock' && (tempSearchResult.price === null || tempSearchResult.shares_owned === null)))) {
+//                                     tempSearchResult.type = 'Stock'; // Force type to Stock
+//                                     tempSearchResult.cost_per_share = currencyData.price_per; // Map currency fields to stock equivalents
+//                                     tempSearchResult.shares_owned = currencyData.amount_owned;
+//                                 }
+                                
+//                                 // Perform calculations for currency-stored assets
+//                                 const parsedAmountOwned = parseFloat(tempSearchResult.amount_owned);
+//                                 if (!isNaN(parsedAmountOwned) && parsedAmountOwned > 0) {
+//                                     const parsedPricePer = parseFloat(tempSearchResult.price_per);
+//                                     const parsedCurrentEntryPrice = parseFloat(tempSearchResult.current_entry_price);
+//                                     const parsedCurrentPrice = parseFloat(tempSearchResult.price);
+
+//                                     if (!isNaN(parsedPricePer)) {
+//                                         tempSearchResult.total_paid = parsedPricePer * parsedAmountOwned;
+//                                     } else {
+//                                         tempSearchResult.total_paid = null;
+//                                     }
+//                                     if (!isNaN(parsedCurrentPrice)) {
+//                                         tempSearchResult.total_value = parsedCurrentPrice * parsedAmountOwned;
+//                                     } else {
+//                                         tempSearchResult.total_value = null;
+//                                     }
+//                                     // Manual calculation for Profits/Losses for stocks (even if stored as currency)
+//                                     if (tempSearchResult.type === 'Stock' && !isNaN(parsedCurrentEntryPrice) && !isNaN(parsedPricePer)) {
+//                                         tempSearchResult.profits_losses = (parsedCurrentEntryPrice * parsedAmountOwned) - (parsedPricePer * parsedAmountOwned);
+//                                     } else if (tempSearchResult.type === 'Cryptocurrency' && !isNaN(parsedCurrentPrice) && !isNaN(parsedPricePer)) {
+//                                         tempSearchResult.profits_losses = (parsedCurrentPrice - parsedPricePer) * parsedAmountOwned;
+//                                     } else {
+//                                         tempSearchResult.profits_losses = null;
+//                                     }
+//                                 }
+//                             }
+//                         }
+//                     }
+//                 } catch (currencyError) {
+//                     console.log("Error fetching as cryptocurrency (primary attempt):", currencyError.response?.data || currencyError);
+//                 }
+//             }
+            
+//             // Final check: if after all attempts, tempSearchResult is still null, or if it's a stock with no price
+//             // and it wasn't a known crypto, try the other API if it wasn't attempted.
+//             if (!tempSearchResult || (tempSearchResult.type === 'Stock' && tempSearchResult.price === null)) {
+//                 if (!stockApiAttempted && COMMON_STOCK_SYMBOLS.includes(upperSymbol)) { // Try stock API if not already attempted for a common stock
+//                      try {
+//                         const stockResponse = await axios.get(`${apiBaseUrl}/stocks/?symbol=${upperSymbol}`, {
+//                             headers: { 'Authorization': `Bearer ${accessToken}` }
+//                         });
+//                         if (stockResponse.data && stockResponse.data.length > 0) {
+//                             const stockData = stockResponse.data[0];
+//                             if (stockData.name || stockData.current_price !== null || stockData.shares_owned !== null) {
+//                                 tempSearchResult = {
+//                                     name: stockData.name,
+//                                     symbol: stockData.symbol,
+//                                     price: stockData.current_price,
+//                                     type: 'Stock',
+//                                     cost_per_share: stockData.cost_per_share,
+//                                     shares_owned: stockData.shares_owned,
+//                                     percent_change_24h: stockData.percent_change_24h || null,
+//                                     current_entry_price: stockData.current_entry_price || stockData.cost_per_share,
+//                                     market_cap: stockData.market_cap,
+//                                     volume: stockData.volume,
+//                                     pe_ratio: stockData.pe_ratio,
+//                                 };
+//                                 const parsedSharesOwned = parseFloat(tempSearchResult.shares_owned);
+//                                 if (!isNaN(parsedSharesOwned) && parsedSharesOwned > 0) {
+//                                     const parsedCostPerShare = parseFloat(tempSearchResult.cost_per_share);
+//                                     const parsedCurrentEntryPrice = parseFloat(tempSearchResult.current_entry_price);
+//                                     const parsedCurrentPrice = parseFloat(tempSearchResult.price);
+//                                     if (!isNaN(parsedCostPerShare)) {
+//                                         tempSearchResult.amount_paid = parsedCostPerShare * parsedSharesOwned;
+//                                     } else { tempSearchResult.amount_paid = null; }
+//                                     if (!isNaN(parsedCurrentPrice)) {
+//                                         tempSearchResult.total_value = parsedCurrentPrice * parsedSharesOwned;
+//                                     } else { tempSearchResult.total_value = null; }
+//                                     // Manual calculation for Profits/Losses for stocks
+//                                     if (!isNaN(parsedCurrentEntryPrice) && !isNaN(parsedCostPerShare)) {
+//                                         tempSearchResult.profits_losses = (parsedCurrentEntryPrice * parsedSharesOwned) - (parsedCostPerShare * parsedSharesOwned);
+//                                     } else { tempSearchResult.profits_losses = null; }
+//                                 }
+//                             }
+//                         }
+//                     } catch (stockError) {
+//                         console.log("Error fetching as stock (fallback attempt):", stockError.response?.data || stockError);
+//                     }
+//                 } else if (!currencyApiAttempted && KNOWN_CRYPTOS.includes(upperSymbol)) { // Try currency API if not already attempted for a known crypto
+//                     try {
+//                         const currencyResponse = await axios.get(`${apiBaseUrl}/currencies/?symbol=${upperSymbol}`, {
+//                             headers: { 'Authorization': `Bearer ${accessToken}` }
+//                         });
+//                         if (currencyResponse.data && currencyResponse.data.length > 0) {
+//                             const currencyData = currencyResponse.data[0];
+//                             if (currencyData.name || currencyData.current_price !== null || currencyData.amount_owned !== null) {
+//                                 tempSearchResult = {
+//                                     name: currencyData.name,
+//                                     symbol: currencyData.symbol,
+//                                     price: currencyData.current_price,
+//                                     type: 'Cryptocurrency',
+//                                     rank: currencyData.rank,
+//                                     percent_change_1h: currencyData.percent_change_1h,
+//                                     percent_change_24h: currencyData.percent_change_24h,
+//                                     percent_change_7d: currencyData.percent_change_7d,
+//                                     price_per: currencyData.price_per,
+//                                     current_entry_price: currencyData.current_entry_price,
+//                                     amount_owned: currencyData.amount_owned,
+//                                     market_cap: currencyData.market_cap,
+//                                     volume_24h: currencyData.volume_24h,
+//                                 };
+//                                 const parsedAmountOwned = parseFloat(tempSearchResult.amount_owned);
+//                                 if (!isNaN(parsedAmountOwned) && parsedAmountOwned > 0) {
+//                                     const parsedPricePer = parseFloat(tempSearchResult.price_per);
+//                                     const parsedCurrentEntryPrice = parseFloat(tempSearchResult.current_entry_price);
+//                                     const parsedCurrentPrice = parseFloat(tempSearchResult.price);
+//                                     if (!isNaN(parsedPricePer)) {
+//                                         tempSearchResult.total_paid = parsedPricePer * parsedAmountOwned;
+//                                     } else { tempSearchResult.total_paid = null; }
+//                                     if (!isNaN(parsedCurrentPrice)) {
+//                                         tempSearchResult.total_value = parsedCurrentPrice * parsedAmountOwned;
+//                                     } else { tempSearchResult.total_value = null; }
+//                                     if (!isNaN(parsedCurrentEntryPrice) && !isNaN(parsedPricePer)) {
+//                                         tempSearchResult.profits_losses = (parsedCurrentEntryPrice * parsedAmountOwned) - (parsedPricePer * parsedAmountOwned);
+//                                     } else { tempSearchResult.profits_losses = null; }
+//                                 }
+//                             }
+//                         }
+//                     } catch (currencyError) {
+//                         console.log("Error fetching as cryptocurrency (fallback attempt):", currencyError.response?.data || currencyError);
+//                     }
+//                 }
+//             }
 
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        setMessage('');
-        setSearchResult(null);
-        setLoading(true);
+//             if (tempSearchResult) {
+//                 console.log("Final search result data:", tempSearchResult); // Debug log
+//                 setSearchResult(tempSearchResult);
+//                 setMessage('');
+//             } else {
+//                 setMessage('No information found for that symbol.');
+//             }
 
-        if (!symbol.trim()) {
-            setMessage('Please enter a symbol.');
-            setLoading(false);
-            return;
-        }
+//         } catch (overallError) {
+//             console.error("Overall error during search:", overallError.response?.data || overallError);
+//             setMessage('An unexpected error occurred during search. Please try again.');
+//             if (overallError.response?.status === 401) {
+//                 navigate('/login');
+//             }
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
 
-        const accessToken = localStorage.getItem('accessToken');
-        if (!accessToken) {
-            setMessage('You need to be logged in to search for assets.');
-            navigate('/login');
-            setLoading(false);
-            return;
-        }
+//     const formatCurrency = (amount) => {
+//         if (amount === null || amount === undefined) {
+//             return 'N/A';
+//         }
+//         return new Intl.NumberFormat('en-US', {
+//             style: 'currency',
+//             currency: 'USD',
+//             minimumFractionDigits: 2,
+//             maximumFractionDigits: 2
+//         }).format(amount);
+//     };
 
-        const upperSymbol = symbol.toUpperCase();
-        let found = false;
-        let tempSearchResult = null;
+//     const formatLargeCurrency = (amount) => {
+//         if (amount === null || amount === undefined) {
+//             return 'N/A';
+//         }
+//         // Handle very large numbers with proper formatting
+//         if (amount >= 1e12) {
+//             return `$${(amount / 1e12).toFixed(2)}T`;
+//         } else if (amount >= 1e9) {
+//             return `$${(amount / 1e9).toFixed(2)}B`;
+//         } else if (amount >= 1e6) {
+//             return `$${(amount / 1e6).toFixed(2)}M`;
+//         } else if (amount >= 1e3) {
+//             return `$${(amount / 1e3).toFixed(2)}K`;
+//         }
+//         return formatCurrency(amount);
+//     };
 
-        try {
-            // 1. Attempt to fetch as a stock first
-            try {
-                const stockResponse = await axios.get(`${apiBaseUrl}/stocks/?symbol=${upperSymbol}`, {
-                    headers: { 'Authorization': `Bearer ${accessToken}` }
-                });
-                if (stockResponse.data && stockResponse.data.length > 0) {
-                    const stockData = stockResponse.data[0];
-                    tempSearchResult = {
-                        name: stockData.name,
-                        symbol: stockData.symbol,
-                        price: stockData.current_price,
-                        type: 'Stock',
-                        cost_per_share: stockData.cost_per_share,
-                        shares_owned: stockData.shares_owned,
-                        amount_paid: stockData.amount_paid,
-                        profits_losses: stockData.profits_losses,
-                        total_value: stockData.total_value, // Ensure total_value is captured
-                    };
-                    found = true;
-                }
-            } catch (stockError) {
-                console.log("Error fetching as stock (might not exist in portfolio or API issue):", stockError.response?.data || stockError);
-            }
+//     const formatNumber = (value, decimals = 8) => {
+//         if (value === null || value === undefined) {
+//             return 'N/A';
+//         }
+//         return parseFloat(value).toFixed(decimals);
+//     };
 
-            // 2. If not found as a stock, attempt to fetch as a cryptocurrency
-            if (!found) {
-                try {
-                    const currencyResponse = await axios.get(`${apiBaseUrl}/currencies/?symbol=${upperSymbol}`, {
-                        headers: { 'Authorization': `Bearer ${accessToken}` }
-                    });
-                    if (currencyResponse.data && currencyResponse.data.length > 0) {
-                        const currencyData = currencyResponse.data[0];
-                        tempSearchResult = {
-                            name: currencyData.name,
-                            symbol: currencyData.symbol,
-                            price: currencyData.current_price,
-                            type: 'Cryptocurrency',
-                            rank: currencyData.rank,
-                            percent_change_1h: currencyData.percent_change_1h,
-                            percent_change_24h: currencyData.percent_change_24h,
-                            percent_change_7d: currencyData.percent_change_7d,
-                            price_per: currencyData.price_per,
-                            amount_owned: currencyData.amount_owned,
-                            total_paid: currencyData.total_paid,
-                            profits_losses: currencyData.profits_losses,
-                            total_value: currencyData.total_value, // Ensure total_value is captured
-                        };
-                        found = true;
-                    }
-                } catch (currencyError) {
-                    console.log("Error fetching as cryptocurrency (might not exist in portfolio or API issue):", currencyError.response?.data || currencyError);
-                }
-            }
+//     const formatPercentage = (value) => {
+//         if (value === null || value === undefined) {
+//             return 'N/A';
+//         }
+//         const formatted = parseFloat(value).toFixed(2);
+//         return `${formatted >= 0 ? '+' : ''}${formatted}%`;
+//     };
 
-            // Client-side override for type if it's a known stock symbol
-            if (found && tempSearchResult && tempSearchResult.type === 'Cryptocurrency' && COMMON_STOCK_SYMBOLS.includes(upperSymbol)) {
-                console.log(`Overriding type for ${upperSymbol} from Cryptocurrency to Stock.`);
-                tempSearchResult.type = 'Stock';
-            }
+//     const getPercentageClass = (value) => {
+//         if (value === null || value === undefined) return '';
+//         return value >= 0 ? 'profit' : 'loss';
+//     };
 
-            if (found) {
-                setSearchResult(tempSearchResult);
-                setMessage('');
-            } else {
-                setMessage('No information found for that symbol.');
-            }
+//     const isOwned = (asset) => {
+//         console.log("Checking if asset is owned:", asset); // Debug log
+//         if (asset.type === 'Cryptocurrency') {
+//             const owned = asset.amount_owned !== null && asset.amount_owned !== undefined && parseFloat(asset.amount_owned) > 0;
+//             console.log("Crypto owned check:", { amount_owned: asset.amount_owned, owned });
+//             return owned;
+//         } else { // This handles 'Stock' type
+//             const owned = asset.shares_owned !== null && asset.shares_owned !== undefined && parseFloat(asset.shares_owned) > 0;
+//             console.log("Stock owned check:", { shares_owned: asset.shares_owned, owned });
+//             return owned;
+//         }
+//     };
 
-        } catch (overallError) {
-            console.error("Overall error during search:", overallError.response?.data || overallError);
-            setMessage('An unexpected error occurred during search. Please try again.');
-            if (overallError.response?.status === 401) {
-                navigate('/login');
-            }
-        } finally {
-            setLoading(false);
-        }
-    };
+//     const handleBack = () => {
+//         navigate('/');
+//     };
 
-    const formatCurrency = (amount) => {
-        if (amount === null || amount === undefined) {
-            return 'N/A';
-        }
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }).format(amount);
-    };
+//     return (
+//         <div className="App">
+//             <h1>Search for Crypto or Stock</h1>
+//             {message && (
+//                 <p className={message.includes('Error') || message.includes('No information') ? 'error-message' : 'success-message'}>
+//                     {message}
+//                 </p>
+//             )}
 
-    const formatPercentage = (value) => {
-        if (value === null || value === undefined) {
-            return 'N/A';
-        }
-        return `${parseFloat(value).toFixed(2)}%`;
-    };
+//             <form onSubmit={handleSearch}>
+//                 <input
+//                     type="text"
+//                     placeholder="Enter Symbol (e.g., TSLA, BTC)"
+//                     value={symbol}
+//                     onChange={(e) => setSymbol(e.target.value)}
+//                     required
+//                 />
+//                 <button type="submit" disabled={loading}>
+//                     {loading ? 'Searching...' : 'Search'}
+//                 </button>
+//             </form>
 
-    const handleBack = () => {
-        navigate('/'); // Go back to the main portal page
-    };
+//             {searchResult && (
+//                 <div className="search-result-card">
+//                     <h3>{searchResult.name} ({searchResult.symbol})</h3>
+//                     <p><strong>Type:</strong> {searchResult.type}</p>
+                    
+//                     {/* Current Price */}
+//                     <p>
+//                         <strong>Current Price:</strong> {formatCurrency(searchResult.price)}
+//                         {searchResult.price === null && searchResult.type === 'Stock' && (
+//                             <span className="api-limit-message"> (Your Daily API Limit has been reached)</span>
+//                         )}
+//                     </p>
 
-    return (
-        <div className="App">
-            <h1>Search for Crypto or Stock</h1>
-            {message && <p className={message.includes('Error') || message.includes('No information') ? 'error-message' : 'success-message'}>{message}</p>}
+//                     {/* Show if this asset is owned */}
+//                     {isOwned(searchResult) && (
+//                         <div className="portfolio-section">
+//                             <h4>📊 Your Portfolio Holdings</h4>
+                            
+//                             {searchResult.type === 'Cryptocurrency' ? (
+//                                 <>
+//                                     <p><strong>Amount Owned:</strong> {formatNumber(searchResult.amount_owned, 8)}</p>
+//                                     {/* Use current_entry_price or fallback to price_per for "Price per (at entry)" */}
+//                                     <p><strong>Price per (at entry):</strong> ${formatNumber(searchResult.current_entry_price || searchResult.price_per, 8)}</p>
+//                                     <p><strong>Price Paid (purchase price):</strong> {formatCurrency(searchResult.price_per)}</p>
+//                                     <p><strong>Total Paid:</strong> {formatCurrency(searchResult.total_paid)}</p>
+//                                     <p><strong>Total Value:</strong> {formatCurrency(searchResult.total_value)}</p>
+//                                     <p className={getPercentageClass(searchResult.profits_losses)}>
+//                                         <strong>Profits/Losses:</strong> {formatCurrency(searchResult.profits_losses)}
+//                                     </p>
+//                                 </>
+//                             ) : (
+//                                 <>
+//                                     <p><strong>Shares Owned:</strong> {formatNumber(searchResult.shares_owned, 4)}</p>
+//                                     {/* Display current_entry_price for stocks as "Cost per Share (at entry)" */}
+//                                     <p><strong>Cost per Share (at entry):</strong> {formatCurrency(searchResult.current_entry_price || searchResult.cost_per_share)}</p>
+//                                     {/* Add a separate line for the actual purchase price */}
+//                                     <p><strong>Price Paid (purchase price):</strong> {formatCurrency(searchResult.cost_per_share)}</p>
+//                                     <p><strong>Total Paid:</strong> {formatCurrency(searchResult.amount_paid)}</p>
+//                                     <p><strong>Total Value:</strong> {formatCurrency(searchResult.total_value)}</p>
+//                                     <p className={getPercentageClass(searchResult.profits_losses)}>
+//                                         <strong>Profits/Losses:</strong> {formatCurrency(searchResult.profits_losses)}
+//                                     </p>
+//                                 </>
+//                             )}
+//                         </div>
+//                     )}
 
-            <form onSubmit={handleSearch}>
-                <input
-                    type="text"
-                    placeholder="Enter Symbol (e.g., TSLA, BTC)"
-                    value={symbol}
-                    onChange={(e) => setSymbol(e.target.value)}
-                    required
-                />
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Searching...' : 'Search'}
-                </button>
-            </form>
+//                     {/* Market Information */}
+//                     <div className="market-info-section">
+//                         <h4>📈 Market Information</h4>
+                        
+//                         {searchResult.type === 'Cryptocurrency' && (
+//                             <>
+//                                 <p><strong>Rank:</strong> #{searchResult.rank || 'N/A'}</p>
+//                                 <p className={getPercentageClass(searchResult.percent_change_1h)}>
+//                                     <strong>1HR Change:</strong> {formatPercentage(searchResult.percent_change_1h)}
+//                                 </p>
+//                                 <p className={getPercentageClass(searchResult.percent_change_24h)}>
+//                                     <strong>24HR Change:</strong> {formatPercentage(searchResult.percent_change_24h)}
+//                                 </p>
+//                                 <p className={getPercentageClass(searchResult.percent_change_7d)}>
+//                                     <strong>7D Change:</strong> {formatPercentage(searchResult.percent_change_7d)}
+//                                 </p>
+//                                 {searchResult.market_cap && (
+//                                     <p><strong>Market Cap:</strong> {formatLargeCurrency(searchResult.market_cap)}</p>
+//                                 )}
+//                                 {searchResult.volume_24h && (
+//                                     <p><strong>24H Volume:</strong> {formatLargeCurrency(searchResult.volume_24h)}</p>
+//                                 )}
+//                             </>
+//                         )}
 
-            {searchResult && (
-                <div className="search-result-card">
-                    <h3>{searchResult.name} ({searchResult.symbol})</h3>
-                    <p>Type: {searchResult.type}</p>
-                    {/* Display Current Price with API limit message if applicable */}
-                    <p>
-                        Current Price: {formatCurrency(searchResult.price)}
-                        {searchResult.price === null && searchResult.type === 'Stock' && (
-                            <span className="api-limit-message"> (Your Daily API Limit has been reached)</span>
-                        )}
-                    </p>
+//                         {searchResult.type === 'Stock' && (
+//                             <>
+//                                 {/* Added for consistency with crypto display */}
+//                                 <p className={getPercentageClass(searchResult.percent_change_24h)}>
+//                                     <strong>24HR Change:</strong> {formatPercentage(searchResult.percent_change_24h)}
+//                                 </p>
+//                                 {searchResult.market_cap && (
+//                                     <p><strong>Market Cap:</strong> {formatLargeCurrency(searchResult.market_cap)}</p>
+//                                 )}
+//                                 {searchResult.volume &&(
+//                                     <p><strong>Volume:</strong> {formatLargeCurrency(searchResult.volume)}</p>
+//                                 )}
+//                                 {searchResult.pe_ratio && searchResult.pe_ratio !== 'N/A' && (
+//                                     <p><strong>P/E Ratio:</strong> {searchResult.pe_ratio}</p>
+//                                 )}
+//                             </>
+//                         )}
+//                     </div>
+//                 </div>
+//             )}
 
-                    {/* Conditional rendering for more details */}
-                    {searchResult.type === 'Cryptocurrency' && (
-                        <div className="details">
-                            <p>Rank: {searchResult.rank !== null && searchResult.rank !== undefined ? searchResult.rank : 'N/A'}</p>
-                            <p className={searchResult.percent_change_1h >= 0 ? 'profit' : 'loss'}>1HR Change: {formatPercentage(searchResult.percent_change_1h)}</p>
-                            <p className={searchResult.percent_change_24h >= 0 ? 'profit' : 'loss'}>24HR Change: {formatPercentage(searchResult.percent_change_24h)}</p>
-                            <p className={searchResult.percent_change_7d >= 0 ? 'profit' : 'loss'}>7D Change: {formatPercentage(searchResult.percent_change_7d)}</p>
-                            {/* Display owned info if available (meaning it's in user's portfolio) */}
-                            {searchResult.amount_owned !== null && searchResult.amount_owned !== undefined && (
-                                <>
-                                    <p>Amount Owned: {parseFloat(searchResult.amount_owned).toFixed(8)}</p>
-                                    <p>Price per (at entry): {parseFloat(searchResult.price_per).toFixed(8)}</p>
-                                    <p>Total Paid: {formatCurrency(searchResult.total_paid)}</p>
-                                    <p>Total Value: {formatCurrency(searchResult.total_value)}</p>
-                                    <p className={searchResult.profits_losses >= 0 ? 'profit' : 'loss'}>Profits/Losses: {formatCurrency(searchResult.profits_losses)}</p>
-                                </>
-                            )}
-                        </div>
-                    )}
+//             <hr />
 
-                    {searchResult.type === 'Stock' && (
-                        <div className="details">
-                            {/* Display owned info if available (meaning it's in user's portfolio) */}
-                            {searchResult.shares_owned !== null && searchResult.shares_owned !== undefined && (
-                                <>
-                                    <p>Shares Owned: {parseFloat(searchResult.shares_owned).toFixed(4)}</p>
-                                    <p>Price per (at entry): {parseFloat(searchResult.cost_per_share).toFixed(2)}</p>
-                                    <p>Total Paid: {formatCurrency(searchResult.amount_paid)}</p>
-                                    <p>Total Value: {formatCurrency(searchResult.total_value)}</p>
-                                    <p className={searchResult.profits_losses >= 0 ? 'profit' : 'loss'}>Profits/Losses: {formatCurrency(searchResult.profits_losses)}</p>
-                                </>
-                            )}
-                        </div>
-                    )}
-                </div>
-            )}
+//             {/* Legend Table */}
+//             <div className="legend-section">
+//                 <h2>Common Symbols to Search</h2>
+//                 <div className="legend-tables-container">
+//                     <div className="legend-table">
+//                         <h3>Top 10 Cryptocurrencies</h3>
+//                         {topCryptos.length === 0 ? (
+//                             <p>Loading...</p>
+//                         ) : (
+//                             <table>
+//                                 <thead>
+//                                     <tr>
+//                                         <th>Rank</th>
+//                                         <th>Name</th>
+//                                         <th>Symbol</th>
+//                                     </tr>
+//                                 </thead>
+//                                 <tbody>
+//                                     {topCryptos.map((crypto, index) => (
+//                                         <tr 
+//                                             key={index}
+//                                             onClick={() => setSymbol(crypto.symbol)}
+//                                             style={{ cursor: 'pointer' }}
+//                                             title="Click to search"
+//                                         >
+//                                             <td>{crypto.rank}</td>
+//                                             <td>{crypto.name}</td>
+//                                             <td>{crypto.symbol}</td>
+//                                         </tr>
+//                                     ))}
+//                                 </tbody>
+//                             </table>
+//                         )}
+//                     </div>
 
-            <hr />
+//                     <div className="legend-table">
+//                         <h3>Top 10 Stocks</h3>
+//                         {topStocks.length === 0 ? (
+//                             <p>Loading...</p>
+//                         ) : (
+//                             <table>
+//                                 <thead>
+//                                     <tr>
+//                                         <th>Symbol</th>
+//                                         <th>Name</th>
+//                                     </tr>
+//                                 </thead>
+//                                 <tbody>
+//                                     {topStocks.map((stock, index) => (
+//                                         <tr 
+//                                             key={index}
+//                                             onClick={() => setSymbol(stock.symbol)}
+//                                             style={{ cursor: 'pointer' }}
+//                                             title="Click to search"
+//                                         >
+//                                             <td>{stock.rank || 'N/A'}</td> {/* Use stock.rank if available, otherwise 'N/A' */}
+//                                             <td>{stock.name}</td>
+//                                             <td>{stock.symbol}</td>
+//                                         </tr>
+//                                     ))}
+//                                 </tbody>
+//                             </table>
+//                         )}
+//                     </div>
+//                 </div>
+//             </div>
 
-            {/* Legend Table */}
-            <div className="legend-section">
-                <h2>Common Symbols to Search</h2>
-                <div className="legend-tables-container">
-                    <div className="legend-table">
-                        <h3>Top 10 Cryptocurrencies</h3>
-                        {topCryptos.length === 0 ? (
-                            <p>Loading...</p>
-                        ) : (
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Rank</th>
-                                        <th>Name</th>
-                                        <th>Symbol</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {topCryptos.map((crypto, index) => (
-                                        <tr key={index}>
-                                            <td>{crypto.rank}</td>
-                                            <td>{crypto.name}</td>
-                                            <td>{crypto.symbol}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )}
-                    </div>
+//             <hr />
+//             <button onClick={handleBack} className="back-button">Back to Portal</button>
+//         </div>
+//     );
+// }
 
-                    <div className="legend-table">
-                        <h3>Top 10 Stocks</h3>
-                        {topStocks.length === 0 ? (
-                            <p>Loading...</p>
-                        ) : (
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Symbol</th>
-                                        <th>Name</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {topStocks.map((stock, index) => (
-                                        <tr key={index}>
-                                            <td>{stock.symbol}</td>
-                                            <td>{stock.name}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        )}
-                    </div>
-                </div>
-            </div>
-
-            <hr />
-            <button onClick={handleBack} className="back-button">Back to Portal</button>
-        </div>
-    );
-}
-
-export default CryptoStockSearch;
+// export default CryptoStockSearch;

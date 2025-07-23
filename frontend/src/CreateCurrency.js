@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // Added useCallback
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -112,24 +112,20 @@ function CreateCurrency({ apiBaseUrl }) {
                     }
                 }
             );
-            setMessage(`Currency "${currencyName}" added successfully to portfolio!`);
-            setCurrencyName('');
-            setSymbol('');
-            setCurrentEntryPrice(''); // Reset new state
-            setPricePaid(''); // Reset renamed state
-            setAmountOwned('');
+            // Instead of setting local message, pass it via navigate state
+            navigate('/currencies', { state: { successMessage: `Currency "${currencyName}" successfully saved!` } });
 
         } catch (error) {
             console.error("Error creating currency:", error.response?.data || error);
             const errorMsg = error.response?.data?.name?.[0] ||
-                             error.response?.data?.portfolio?.[0] ||
-                             error.response?.data?.symbol?.[0] ||
-                             error.response?.data?.current_entry_price?.[0] || // Added validation error for new field
-                             error.response?.data?.price_per?.[0] ||
-                             error.response?.data?.amount_owned?.[0] ||
-                             error.response?.data?.non_field_errors?.[0] ||
-                             error.response?.data?.detail ||
-                             'Failed to create currency.';
+                               error.response?.data?.portfolio?.[0] ||
+                               error.response?.data?.symbol?.[0] ||
+                               error.response?.data?.current_entry_price?.[0] || // Added validation error for new field
+                               error.response?.data?.price_per?.[0] ||
+                               error.response?.data?.amount_owned?.[0] ||
+                               error.response?.data?.non_field_errors?.[0] ||
+                               error.response?.data?.detail ||
+                               'Failed to create currency.';
             setMessage(errorMsg);
             if (error.response?.status === 401) {
                 navigate('/login');

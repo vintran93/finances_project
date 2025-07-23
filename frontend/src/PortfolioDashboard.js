@@ -122,8 +122,8 @@ function PortfolioDashboard({ apiBaseUrl }) {
         navigate('/stocks/new');
     };
 
-    // NEW: Function to handle deleting a stock
-    const handleDeleteStock = async (itemId, itemName, itemType) => {
+    // NEW: Function to handle deleting an item (stock or currency)
+    const handleDeleteItem = async (itemId, itemName, itemType, portfolioId) => {
         if (!window.confirm(`Are you sure you want to delete "${itemName}" (${itemType})?`)) {
             return;
         }
@@ -137,18 +137,18 @@ function PortfolioDashboard({ apiBaseUrl }) {
                 return;
             }
 
-            // Determine endpoint based on itemType (Stock or Currency)
             let deleteEndpoint = '';
             if (itemType === 'Stock') {
                 deleteEndpoint = `${apiBaseUrl}/stocks/${itemId}/`;
             } else if (itemType === 'Currency') {
-                // For currencies, we need the portfolio ID. Assuming it's available in the item object.
-                const itemPortfolioId = combinedStocksAndCurrenciesForStocksPortfolio.find(item => item.id === itemId)?.portfolio;
-                if (!itemPortfolioId) {
+                // For currencies, we need the portfolio ID.
+                // It's passed directly now, or we can find it if not passed.
+                const currentItemPortfolioId = portfolioId || cryptoCurrencies.find(c => c.id === itemId)?.portfolio;
+                if (!currentItemPortfolioId) {
                     setMessage('Error: Could not determine portfolio for currency deletion.');
                     return;
                 }
-                deleteEndpoint = `${apiBaseUrl}/portfolios/${itemPortfolioId}/currencies/${itemId}/`;
+                deleteEndpoint = `${apiBaseUrl}/portfolios/${currentItemPortfolioId}/currencies/${itemId}/`;
             } else {
                 setMessage('Error: Unknown item type for deletion.');
                 return;
@@ -208,6 +208,7 @@ function PortfolioDashboard({ apiBaseUrl }) {
                                 <th>Profits/Losses</th>
                                 <th>Price per (at entry)</th>
                                 <th>Amount owned</th>
+                                <th>Actions</th> {/* NEW: Actions column for cryptocurrencies */}
                             </tr>
                         </thead>
                         <tbody>
@@ -233,6 +234,14 @@ function PortfolioDashboard({ apiBaseUrl }) {
                                     </td>
                                     <td>{parseFloat(currency.current_entry_price || currency.price_per).toFixed(8)}</td>
                                     <td>{parseFloat(currency.amount_owned).toFixed(8)}</td>
+                                    <td>
+                                        <button
+                                            onClick={() => handleDeleteItem(currency.id, currency.name, 'Currency', currency.portfolio)}
+                                            className="delete-button"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -257,7 +266,7 @@ function PortfolioDashboard({ apiBaseUrl }) {
                                 <th>Profits/Losses</th>
                                 <th>Purchase Price</th>
                                 <th>Quantity Owned</th>
-                                <th>Actions</th> {/* NEW: Actions column */}
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -278,16 +287,15 @@ function PortfolioDashboard({ apiBaseUrl }) {
                                     </td>
                                     <td>
                                         {item.cost_per_share !== undefined ? parseFloat(item.cost_per_share).toFixed(2) :
-                                         item.price_per !== undefined ? parseFloat(item.price_per).toFixed(8) : 'N/A'}
+                                           item.price_per !== undefined ? parseFloat(item.price_per).toFixed(8) : 'N/A'}
                                     </td>
                                     <td>
                                         {item.shares_owned !== undefined ? parseFloat(item.shares_owned).toFixed(4) :
-                                         item.amount_owned !== undefined ? parseFloat(item.amount_owned).toFixed(8) : 'N/A'}
+                                           item.amount_owned !== undefined ? parseFloat(item.amount_owned).toFixed(8) : 'N/A'}
                                     </td>
-                                    {/* NEW: Delete button */}
                                     <td>
                                         <button
-                                            onClick={() => handleDeleteStock(item.id, item.name, item.cost_per_share !== undefined ? 'Stock' : 'Currency')}
+                                            onClick={() => handleDeleteItem(item.id, item.name, item.cost_per_share !== undefined ? 'Stock' : 'Currency', item.portfolio)}
                                             className="delete-button"
                                         >
                                             Delete
@@ -306,7 +314,7 @@ function PortfolioDashboard({ apiBaseUrl }) {
             <div className="dashboard-actions">
                 <button onClick={handleManagePortfolios} className="action-button">Manage Portfolios</button>
                 <button onClick={handleAddCurrency} className="action-button">Add New Currency</button>
-                <button onClick={handleAddStock} className="action-button">Add New Stock</button>
+                {/* <button onClick={handleAddStock} className="action-button">Add New Stock</button> */}
             </div>
         </div>
     );

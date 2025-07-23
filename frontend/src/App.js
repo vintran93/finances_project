@@ -12,7 +12,8 @@ import CreateCurrency from './CreateCurrency';
 import AllCurrenciesList from './AllCurrenciesList';
 import PortfolioDashboard from './PortfolioDashboard';
 import CreateStock from './CreateStock';
-import CryptoStockSearch from './CryptoStockSearch'; // NEW IMPORT: Import CryptoStockSearch
+import CryptoSearch from './components/CryptoSearch'; // Corrected import for CryptoSearch
+import StockSearch from './components/StockSearch';   // Corrected import for StockSearch
 
 import './App.css';
 
@@ -97,12 +98,12 @@ function AppContent() {
     } catch (error) {
       console.error("Registration error:", error.response?.data || error);
       const errorMsg = error.response?.data?.username?.[0] ||
-                       error.response?.data?.password?.[0] ||
-                       error.response?.data?.re_password?.[0] ||
-                       error.response?.data?.email?.[0] ||
-                       error.response?.data?.non_field_errors?.[0] ||
-                       error.response?.data?.detail ||
-                       'Registration failed.';
+                         error.response?.data?.password?.[0] ||
+                         error.response?.data?.re_password?.[0] ||
+                         error.response?.data?.email?.[0] ||
+                         error.response?.data?.non_field_errors?.[0] ||
+                         error.response?.data?.detail ||
+                         'Registration failed.';
       setMessage(errorMsg);
     }
   };
@@ -295,24 +296,32 @@ function AppContent() {
       {/* NEW ROUTE: Route for Crypto/Stock Search */}
       <Route
         path="/search"
-        element={isAuthenticated ? <CryptoStockSearch apiBaseUrl={AUTH_API_BASE_URL} /> : <CommonContent
-          isAuthenticated={isAuthenticated}
-          username={username}
-          message={message}
-          registerUsername={registerUsername}
-          setRegisterUsername={setRegisterUsername}
-          registerPassword={registerPassword}
-          setRegisterPassword={setRegisterPassword}
-          registerEmail={registerEmail}
-          setRegisterEmail={setRegisterEmail}
-          loginUsername={loginUsername}
-          setLoginUsername={loginUsername}
-          loginPassword={loginPassword}
-          setLoginPassword={loginPassword}
-          handleRegister={handleRegister}
-          handleLogin={handleLogin}
-          handleLogout={handleLogout}
-        />}
+        element={isAuthenticated ? (
+          <>
+            {/* Render both CryptoSearch and StockSearch components */}
+            <CryptoSearch apiBaseUrl={AUTH_API_BASE_URL} />
+            <StockSearch apiBaseUrl={AUTH_API_BASE_URL} />
+          </>
+        ) : (
+          <CommonContent
+            isAuthenticated={isAuthenticated}
+            username={username}
+            message={message}
+            registerUsername={registerUsername}
+            setRegisterUsername={setRegisterUsername}
+            registerPassword={registerPassword}
+            setRegisterPassword={setRegisterPassword}
+            registerEmail={registerEmail}
+            setRegisterEmail={setRegisterEmail}
+            loginUsername={loginUsername}
+            setLoginUsername={setLoginUsername}
+            loginPassword={loginPassword}
+            setLoginPassword={loginPassword}
+            handleRegister={handleRegister}
+            handleLogin={handleLogin}
+            handleLogout={handleLogout}
+          />
+        )}
       />
 
       <Route path="/settings" element={isAuthenticated ? <AccountSettings apiBaseUrl="http://127.0.0.1:8000/api" /> : <CommonContent
@@ -333,7 +342,7 @@ function AppContent() {
           handleLogin={handleLogin}
           handleLogout={handleLogout}
         />} />
-      <Route path="/forgot-password" element={<ForgotPasswordRequest apiBaseUrl="http://127.0.0.1:8000" />} />
+      <Route path="/forgot-password" element={<ForgotPasswordRequest apiBaseUrl="http://127.00.1:8000" />} />
       <Route path="/reset-password-confirm/:uid/:token" element={<PasswordResetConfirm apiBaseUrl="http://127.0.0.1:8000" />} />
     </Routes>
   );
