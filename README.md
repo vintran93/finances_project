@@ -50,16 +50,16 @@ source venv/bin/activate # On Windows: `venv\Scripts\activate`
 ```
 * Install dependencies: 
 ```
-pip install -r requirements.txt # (Assuming you have a requirements.txt) <br/>
+pip install -r requirements.txt # (Assuming you have a requirements.txt) 
 # Or manually: pip install django djangorestframework djoser django-cors-headers requests 
 ```
 * Set environment variables: <br/>
 Create a .env file in your backend root or set them directly in your environment: <br/>
 ```
-DJANGO_SECRET_KEY='your_django_secret_key' <br/>
-JWT_SECRET_KEY='your_jwt_secret_key' <br/>
-COINMARKETCAP_API_KEY='YOUR_COINMARKETCAP_API_KEY' <br/>
-FINANCIALMODELINGPREP_API_KEY='YOUR_FINANCIALMODELINGPREP_API_KEY' <br/>
+DJANGO_SECRET_KEY='your_django_secret_key' 
+JWT_SECRET_KEY='your_jwt_secret_key' 
+COINMARKETCAP_API_KEY='YOUR_COINMARKETCAP_API_KEY' 
+FINANCIALMODELINGPREP_API_KEY='YOUR_FINANCIALMODELINGPREP_API_KEY' 
 ```
 * You can get API keys from CoinMarketCap and Financial Modeling Prep websites. <br/>
 
