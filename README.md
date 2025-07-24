@@ -65,15 +65,15 @@ FINANCIALMODELINGPREP_API_KEY='YOUR_FINANCIALMODELINGPREP_API_KEY' <br/>
 
 * Run migrations: <br/>
 ```
-python manage.py migrate <br/>
+python manage.py migrate 
 ```
 * Create a superuser (optional, for admin access): <br/>
 ```
-python manage.py createsuperuser <br/>
+python manage.py createsuperuser 
 ```
 * Start the Django development server: <br/>
 ```
-python manage.py runserver <br/>
+python manage.py runserver 
 ```
 The backend will typically run on http://127.0.0.1:8000. <br/>
 
@@ -81,17 +81,17 @@ The backend will typically run on http://127.0.0.1:8000. <br/>
  
 * Navigate to the frontend directory: <br/>
 ```
-cd <your-frontend-directory> <br/>
+cd <your-frontend-directory> 
 ```
 * Install Node.js dependencies: <br/>
 ```
-npm install <br/>
-# or yarn install <br/>
+npm install 
+# or yarn install 
 ```
 * Start the React development server: <br/>
 ```
-npm start <br/>
-# or yarn start <br/>
+npm start 
+# or yarn start 
 ```
 The frontend will typically run on http://localhost:3000.<br/>
 
