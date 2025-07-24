@@ -36,7 +36,7 @@ To run this project locally, you will need to set up both the frontend and the b
    ```
    git clone https://github.com/YOUR_USERNAME/doctor‑appointment.git 
    cd doctor‑appointment 
-
+   ```
 1. **Backend Setup (Django):**
 * Clone the repository: (Assuming this is part of a larger project)
 ```
