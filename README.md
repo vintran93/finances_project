@@ -32,62 +32,67 @@ This project is built with a React frontend and a Django REST Framework backend.
 ## Setup & Installation
 To run this project locally, you will need to set up both the frontend and the backend.
 
-1. Backend Setup (Django):
-* Clone the repository: (Assuming this is part of a larger project)
+1. **Clone & install**
+   ```
+   git clone https://github.com/YOUR_USERNAME/doctor‑appointment.git 
+   cd doctor‑appointment 
 
+1. **Backend Setup (Django):**
+* Clone the repository: (Assuming this is part of a larger project)
+```
 git clone <your-repo-url>
 cd <your-backend-directory>
-
+```
 * Create a virtual environment:
-
+```
 python -m venv venv
 source venv/bin/activate # On Windows: `venv\Scripts\activate`
-
+```
 * Install dependencies: 
-
+```
 pip install -r requirements.txt # (Assuming you have a requirements.txt) <br/>
 # Or manually: pip install django djangorestframework djoser django-cors-headers requests 
-
+```
 * Set environment variables: <br/>
 Create a .env file in your backend root or set them directly in your environment: <br/>
-
+```
 DJANGO_SECRET_KEY='your_django_secret_key' <br/>
 JWT_SECRET_KEY='your_jwt_secret_key' <br/>
 COINMARKETCAP_API_KEY='YOUR_COINMARKETCAP_API_KEY' <br/>
 FINANCIALMODELINGPREP_API_KEY='YOUR_FINANCIALMODELINGPREP_API_KEY' <br/>
-
-You can get API keys from CoinMarketCap and Financial Modeling Prep websites. <br/>
+```
+* You can get API keys from CoinMarketCap and Financial Modeling Prep websites. <br/>
 
 * Run migrations: <br/>
-
+```
 python manage.py migrate <br/>
-
+```
 * Create a superuser (optional, for admin access): <br/>
-
+```
 python manage.py createsuperuser <br/>
-
+```
 * Start the Django development server: <br/>
-
+```
 python manage.py runserver <br/>
-
+```
 The backend will typically run on http://127.0.0.1:8000. <br/>
 
-2. Frontend Setup (React): <br/>
+2. **Frontend Setup (React):** <br/>
  
 * Navigate to the frontend directory: <br/>
-
+```
 cd <your-frontend-directory> <br/>
-
+```
 * Install Node.js dependencies: <br/>
-
+```
 npm install <br/>
 # or yarn install <br/>
-
+```
 * Start the React development server: <br/>
-
+```
 npm start <br/>
 # or yarn start <br/>
-
+```
 The frontend will typically run on http://localhost:3000.<br/>
 
 ## Usage
