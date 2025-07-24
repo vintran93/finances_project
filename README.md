@@ -1,6 +1,6 @@
 ## Finances Portfolio Tracker <br/>
-<img width="605" height="910" alt="image" src="https://github.com/user-attachments/assets/f019055f-b1d6-4d55-baec-8f2a8db0b263" />
-<img width="1004" height="911" alt="image" src="https://github.com/user-attachments/assets/587df45c-3375-43cf-92bb-a0d1f2bee3ea" />
+<img width="505" height="810" alt="image" src="https://github.com/user-attachments/assets/f019055f-b1d6-4d55-baec-8f2a8db0b263" />
+<img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/587df45c-3375-43cf-92bb-a0d1f2bee3ea" />
 This is a comprehensive web application designed to help users manage their financial portfolios, including cryptocurrencies, stocks, and precious metals. It provides tools to track holdings, view real-time market data, and analyze portfolio performance.
 
 ## Features <br/>
