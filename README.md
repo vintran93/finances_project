@@ -1,6 +1,6 @@
 ## Finances Portfolio Tracker <br/>
-<img width="505" height="810" alt="image" src="https://github.com/user-attachments/assets/f019055f-b1d6-4d55-baec-8f2a8db0b263" />
-<img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/587df45c-3375-43cf-92bb-a0d1f2bee3ea" />
+<img width="505" height="810" alt="image" src="https://github.com/user-attachments/assets/f019055f-b1d6-4d55-baec-8f2a8db0b263" /> <br/>
+<img width="700" height="600" alt="image" src="https://github.com/user-attachments/assets/587df45c-3375-43cf-92bb-a0d1f2bee3ea" /> <br/>
 This is a comprehensive web application designed to help users manage their financial portfolios, including cryptocurrencies, stocks, and precious metals. It provides tools to track holdings, view real-time market data, and analyze portfolio performance.
 
 ## Features <br/>
@@ -51,52 +51,52 @@ pip install -r requirements.txt # (Assuming you have a requirements.txt) <br/>
 * Set environment variables: <br/>
 Create a .env file in your backend root or set them directly in your environment: <br/>
 
-DJANGO_SECRET_KEY='your_django_secret_key'
-JWT_SECRET_KEY='your_jwt_secret_key'
-COINMARKETCAP_API_KEY='YOUR_COINMARKETCAP_API_KEY'
-FINANCIALMODELINGPREP_API_KEY='YOUR_FINANCIALMODELINGPREP_API_KEY'
+DJANGO_SECRET_KEY='your_django_secret_key' <br/>
+JWT_SECRET_KEY='your_jwt_secret_key' <br/>
+COINMARKETCAP_API_KEY='YOUR_COINMARKETCAP_API_KEY' <br/>
+FINANCIALMODELINGPREP_API_KEY='YOUR_FINANCIALMODELINGPREP_API_KEY' <br/>
 
-You can get API keys from CoinMarketCap and Financial Modeling Prep websites.
+You can get API keys from CoinMarketCap and Financial Modeling Prep websites. <br/>
 
-* Run migrations:
+* Run migrations: <br/>
 
-python manage.py migrate
+python manage.py migrate <br/>
 
-* Create a superuser (optional, for admin access):
+* Create a superuser (optional, for admin access): <br/>
 
-python manage.py createsuperuser
+python manage.py createsuperuser <br/>
 
-* Start the Django development server:
+* Start the Django development server: <br/>
 
-python manage.py runserver
+python manage.py runserver <br/>
 
-The backend will typically run on http://127.0.0.1:8000.
+The backend will typically run on http://127.0.0.1:8000. <br/>
 
-2. Frontend Setup (React):
+2. Frontend Setup (React): <br/>
+ 
+* Navigate to the frontend directory: <br/>
 
-* Navigate to the frontend directory:
+cd <your-frontend-directory> <br/>
 
-cd <your-frontend-directory>
+* Install Node.js dependencies: <br/>
 
-* Install Node.js dependencies:
+npm install <br/>
+# or yarn install <br/>
 
-npm install
-# or yarn install
+* Start the React development server: <br/>
 
-* Start the React development server:
+npm start <br/>
+# or yarn start <br/>
 
-npm start
-# or yarn start
-
-The frontend will typically run on http://localhost:3000.
+The frontend will typically run on http://localhost:3000.<br/>
 
 ## Usage
-1. Register: Navigate to http://localhost:3000 and create a new account.
-2. Login: Use your new credentials to log in.
-3. Manage Portfolios: Go to "Your Portfolios" to create different types of investment portfolios (e.g., "Cryptocurrency," "Stocks").
-4. Add Assets: Within a portfolio, add new currencies or stocks by providing their details and purchase information.
-5. View Dashboard: Check the "Portfolio Dashboard" for an overview of your total balance and asset performance.
-6. Search: Use the "Search Crypto/Stock" page to look up real-time data for individual symbols.
+1. Register: Navigate to http://localhost:3000 and create a new account. <br/>
+2. Login: Use your new credentials to log in. <br/>
+3. Manage Portfolios: Go to "Your Portfolios" to create different types of investment portfolios (e.g., "Cryptocurrency," "Stocks"). <br/>
+4. Add Assets: Within a portfolio, add new currencies or stocks by providing their details and purchase information. <br/>
+5. View Dashboard: Check the "Portfolio Dashboard" for an overview of your total balance and asset performance. <br/>
+6. Search: Use the "Search Crypto/Stock" page to look up real-time data for individual symbols. <br/>
 
 ## Built With <br/>
 * React <br/>
